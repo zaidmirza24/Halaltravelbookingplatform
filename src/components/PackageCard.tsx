@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { MapPin, Star, Heart } from 'lucide-react';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface PackageCardProps {
+  id?: number;
   image: string;
   title: string;
   location: string;
@@ -17,15 +19,16 @@ interface PackageCardProps {
   layout?: 'horizontal' | 'vertical';
 }
 
-export function PackageCard({ 
-  image, 
-  title, 
-  location, 
-  rating, 
-  reviews, 
-  description, 
-  badges, 
-  price, 
+export function PackageCard({
+  id,
+  image,
+  title,
+  location,
+  rating,
+  reviews,
+  description,
+  badges,
+  price,
   priceLabel,
   layout = 'horizontal'
 }: PackageCardProps) {
@@ -77,7 +80,9 @@ export function PackageCard({
               <h3 className="text-emerald-600">${price}</h3>
               <span className="text-caption text-neutral-500">{priceLabel}</span>
             </div>
-            <Button variant="secondary" size="small">View Details</Button>
+            <Link to={`/package/${id || 1}`}>
+              <Button variant="secondary" size="small">View Details</Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -129,7 +134,9 @@ export function PackageCard({
             <h3 className="text-emerald-600">${price}</h3>
             <span className="text-caption text-neutral-500">{priceLabel}</span>
           </div>
-          <Button variant="secondary" size="small">View Details</Button>
+          <Link to={`/package/${id || 1}`}>
+            <Button variant="secondary" size="small">View Details</Button>
+          </Link>
         </div>
       </div>
     </div>

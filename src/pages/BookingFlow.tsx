@@ -1,28 +1,34 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
 import { Footer } from '../components/Footer';
 import { Stepper } from '../components/Stepper';
 import { Button } from '../components/Button';
 import { Calendar, Users, CreditCard, Check, Shield } from 'lucide-react';
 
+interface Step {
+  id: number;
+  label: string;
+}
+
 export function BookingFlow() {
-  const [currentStep, setCurrentStep] = useState(1);
-  
-  const steps = [
+  const [currentStep, setCurrentStep] = useState<number>(1);
+
+  const steps: Step[] = [
     { id: 1, label: 'Dates' },
     { id: 2, label: 'Travelers' },
     { id: 3, label: 'Details' },
     { id: 4, label: 'Payment' },
     { id: 5, label: 'Confirm' }
   ];
-  
-  const handleNext = () => {
+
+  const handleNext = (): void => {
     if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
   };
-  
-  const handleBack = () => {
+
+  const handleBack = (): void => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
@@ -385,9 +391,11 @@ export function BookingFlow() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button variant="primary" size="large">
-                    View My Trip
-                  </Button>
+                  <Link to="/dashboard">
+                    <Button variant="primary" size="large">
+                      View My Trip
+                    </Button>
+                  </Link>
                   <Button variant="secondary" size="large">
                     Download Receipt
                   </Button>

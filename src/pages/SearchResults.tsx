@@ -9,10 +9,13 @@ import { SlidersHorizontal, Map, Grid, List } from 'lucide-react';
 import { packages } from '../data/mockData';
 import { Button } from '../components/Button';
 
+type ViewMode = 'grid' | 'list';
+type SortOption = 'recommended' | 'price-low' | 'price-high' | 'rating';
+
 export function SearchResults() {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
-  const [showFilters, setShowFilters] = useState(false);
-  const [sortBy, setSortBy] = useState('recommended');
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [sortBy, setSortBy] = useState<SortOption>('recommended');
   
   return (
     <div className="min-h-screen bg-neutral-50">

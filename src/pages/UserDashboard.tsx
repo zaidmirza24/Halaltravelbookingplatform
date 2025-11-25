@@ -1,27 +1,57 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
 import { Footer } from '../components/Footer';
 import { MobileBottomNav } from '../components/MobileBottomNav';
-import { 
-  Briefcase, Heart, User, Settings, 
+import {
+  Briefcase, Heart, User, Settings,
   Calendar, MapPin, Download, Share2, MessageCircle,
-  ChevronRight, Clock
+  ChevronRight, Clock, LucideIcon
 } from 'lucide-react';
 import { Badge } from '../components/Badge';
 import { Button } from '../components/Button';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
+type TabId = 'trips' | 'wishlist' | 'profile' | 'settings';
+
+interface SidebarItem {
+  id: TabId;
+  icon: LucideIcon;
+  label: string;
+}
+
+interface Trip {
+  id: number;
+  title: string;
+  location: string;
+  dates: string;
+  status: 'upcoming' | 'completed';
+  image: string;
+  bookingId: string;
+  travelers: string;
+  totalPaid: number;
+}
+
+interface WishlistItem {
+  id: number;
+  title: string;
+  location: string;
+  image: string;
+  price: number;
+  rating: number;
+}
+
 export function UserDashboard() {
-  const [activeTab, setActiveTab] = useState('trips');
-  
-  const sidebarItems = [
+  const [activeTab, setActiveTab] = useState<TabId>('trips');
+
+  const sidebarItems: SidebarItem[] = [
     { id: 'trips', icon: Briefcase, label: 'My Trips' },
     { id: 'wishlist', icon: Heart, label: 'Wishlist' },
     { id: 'profile', icon: User, label: 'Profile' },
     { id: 'settings', icon: Settings, label: 'Settings' }
   ];
-  
-  const trips = [
+
+  const trips: Trip[] = [
     {
       id: 1,
       title: 'Luxury Istanbul Discovery',
@@ -56,8 +86,8 @@ export function UserDashboard() {
       totalPaid: 4097
     }
   ];
-  
-  const wishlistItems = [
+
+  const wishlistItems: WishlistItem[] = [
     {
       id: 1,
       title: 'Dubai Modern Luxury',
@@ -153,9 +183,11 @@ export function UserDashboard() {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h3>My Trips</h3>
-                  <Button variant="secondary" size="small">
-                    Browse Packages
-                  </Button>
+                  <Link to="/search">
+                    <Button variant="secondary" size="small">
+                      Browse Packages
+                    </Button>
+                  </Link>
                 </div>
                 
                 {/* Upcoming Trips */}
@@ -204,9 +236,11 @@ export function UserDashboard() {
                               </div>
                               
                               <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-neutral-200">
-                                <Button variant="primary" size="small">
-                                  View Details
-                                </Button>
+                                <Link to={`/package/${trip.id}`}>
+                                  <Button variant="primary" size="small">
+                                    View Details
+                                  </Button>
+                                </Link>
                                 <button className="flex items-center gap-2 text-sm text-neutral-700 hover:text-emerald-600 transition-colors">
                                   <Download className="w-4 h-4" />
                                   <span>Download</span>
@@ -316,9 +350,11 @@ export function UserDashboard() {
                             <h4 className="text-emerald-600">${item.price}</h4>
                             <span className="text-caption text-neutral-500">per person</span>
                           </div>
-                          <Button variant="secondary" size="small">
-                            View Details
-                          </Button>
+                          <Link to={`/package/${item.id}`}>
+                            <Button variant="secondary" size="small">
+                              View Details
+                            </Button>
+                          </Link>
                         </div>
                       </div>
                     </div>

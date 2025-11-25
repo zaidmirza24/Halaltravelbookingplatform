@@ -1,32 +1,60 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
 import { Footer } from '../components/Footer';
 import { MobileBottomNav } from '../components/MobileBottomNav';
 import { Badge } from '../components/Badge';
 import { Button } from '../components/Button';
 import { ReviewCard } from '../components/ReviewCard';
-import { 
-  MapPin, Star, Share2, Heart, Calendar, Users, 
+import {
+  MapPin, Star, Share2, Heart, Calendar, Users,
   Check, Wifi, Wind, Droplets, Coffee, Utensils,
   ChevronDown, MessageCircle, Shield, Clock
 } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { reviews } from '../data/mockData';
 
+interface Tab {
+  id: string;
+  label: string;
+}
+
+interface GuestCount {
+  adults: number;
+  children: number;
+}
+
+interface ItineraryDay {
+  day: number;
+  title: string;
+  activities: string[];
+}
+
+interface Facility {
+  icon: React.ReactNode;
+  title: string;
+  desc: string;
+}
+
+interface Amenity {
+  icon: React.ReactNode;
+  label: string;
+}
+
 export function PackageDetail() {
-  const [activeTab, setActiveTab] = useState('overview');
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [selectedGuests, setSelectedGuests] = useState({ adults: 2, children: 0 });
-  
-  const tabs = [
+  const [activeTab, setActiveTab] = useState<string>('overview');
+  const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
+  const [selectedGuests, setSelectedGuests] = useState<GuestCount>({ adults: 2, children: 0 });
+
+  const tabs: Tab[] = [
     { id: 'overview', label: 'Overview' },
     { id: 'itinerary', label: 'Itinerary' },
     { id: 'facilities', label: 'Facilities' },
     { id: 'location', label: 'Location' },
     { id: 'reviews', label: 'Reviews' }
   ];
-  
-  const images = [
+
+  const images: string[] = [
     'https://images.unsplash.com/photo-1609518624785-dd9d1d436d1c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpc3RhbmJ1bCUyMGJsdWUlMjBtb3NxdWV8ZW58MXx8fHwxNzY0MDY3NjI0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     'https://images.unsplash.com/photo-1589561454226-796a8aa89b05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpc3RhbmJ1bCUyMGJvc3Bob3J1c3xlbnwxfHx8fDE3NjQwNjc2MjZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
     'https://images.unsplash.com/photo-1609518624785-dd9d1d436d1c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpc3RhbmJ1bCUyMGJsdWUlMjBtb3NxdWV8ZW58MXx8fHwxNzY0MDY3NjI0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
@@ -41,11 +69,11 @@ export function PackageDetail() {
       <div className="border-b border-neutral-200">
         <div className="container-custom py-4">
           <div className="flex items-center gap-2 text-sm text-neutral-600">
-            <a href="#" className="hover:text-emerald-600">Home</a>
+            <Link to="/" className="hover:text-emerald-600">Home</Link>
             <span>/</span>
-            <a href="#" className="hover:text-emerald-600">Turkey</a>
+            <Link to="/search" className="hover:text-emerald-600">Turkey</Link>
             <span>/</span>
-            <a href="#" className="hover:text-emerald-600">Istanbul</a>
+            <Link to="/search" className="hover:text-emerald-600">Istanbul</Link>
             <span>/</span>
             <span className="text-neutral-900">Luxury Istanbul Discovery</span>
           </div>
@@ -183,7 +211,7 @@ export function PackageDetail() {
             {activeTab === 'itinerary' && (
               <div className="space-y-6">
                 <h3 className="mb-6">7-Day Itinerary</h3>
-                {[
+                {([
                   { day: 1, title: 'Arrival & Welcome', activities: ['Airport pickup', 'Hotel check-in', 'Welcome dinner at halal restaurant'] },
                   { day: 2, title: 'Historic Peninsula Tour', activities: ['Blue Mosque visit', 'Hagia Sophia', 'Topkapi Palace', 'Lunch at Sultanahmet'] },
                   { day: 3, title: 'Bosphorus & Asian Side', activities: ['Bosphorus cruise', 'Üsküdar mosques', 'Maiden\'s Tower', 'Asian side dinner'] },
@@ -191,7 +219,7 @@ export function PackageDetail() {
                   { day: 5, title: 'Modern Istanbul', activities: ['Taksim Square', 'Istiklal Street', 'Galata Tower', 'Modern art museums'] },
                   { day: 6, title: 'Free Day & Shopping', activities: ['Optional tours', 'Shopping at Egyptian Bazaar', 'Sunset cruise'] },
                   { day: 7, title: 'Departure', activities: ['Breakfast', 'Last minute shopping', 'Airport transfer'] }
-                ].map((day) => (
+                ] as ItineraryDay[]).map((day) => (
                   <div key={day.day} className="flex gap-4">
                     <div className="flex flex-col items-center">
                       <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold flex-shrink-0">
@@ -220,12 +248,12 @@ export function PackageDetail() {
                 <div>
                   <h3 className="mb-6">Halal & Islamic Facilities</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {[
+                    {([
                       { icon: <Check className="w-6 h-6" />, title: '100% Halal Food', desc: 'All meals served are halal certified' },
                       { icon: <Check className="w-6 h-6" />, title: 'Prayer Rooms', desc: 'Dedicated prayer facilities available' },
                       { icon: <Check className="w-6 h-6" />, title: 'No Alcohol', desc: 'Completely alcohol-free premises' },
                       { icon: <Check className="w-6 h-6" />, title: 'Qibla Direction', desc: 'Clearly marked in all rooms' }
-                    ].map((facility, i) => (
+                    ] as Facility[]).map((facility, i) => (
                       <div key={i} className="flex gap-4">
                         <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0">
                           {facility.icon}
@@ -242,7 +270,7 @@ export function PackageDetail() {
                 <div>
                   <h3 className="mb-6">Hotel Amenities</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[
+                    {([
                       { icon: <Wifi className="w-5 h-5" />, label: 'Free WiFi' },
                       { icon: <Wind className="w-5 h-5" />, label: 'Air Conditioning' },
                       { icon: <Droplets className="w-5 h-5" />, label: 'Swimming Pool' },
@@ -251,7 +279,7 @@ export function PackageDetail() {
                       { icon: <Shield className="w-5 h-5" />, label: '24/7 Security' },
                       { icon: <Clock className="w-5 h-5" />, label: 'Room Service' },
                       { icon: <Users className="w-5 h-5" />, label: 'Family Rooms' }
-                    ].map((amenity, i) => (
+                    ] as Amenity[]).map((amenity, i) => (
                       <div key={i} className="flex items-center gap-3 p-4 rounded-lg bg-neutral-50">
                         <div className="text-emerald-600">{amenity.icon}</div>
                         <span className="text-sm text-neutral-700">{amenity.label}</span>
@@ -404,9 +432,11 @@ export function PackageDetail() {
                 </div>
               </div>
               
-              <Button variant="primary" className="w-full mb-4">
-                Book Now
-              </Button>
+              <Link to="/booking" className="block">
+                <Button variant="primary" className="w-full mb-4">
+                  Book Now
+                </Button>
+              </Link>
               
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-sm text-neutral-600">
@@ -441,9 +471,11 @@ export function PackageDetail() {
             <div className="text-sm text-neutral-600">Starting from</div>
             <h4 className="text-emerald-600">$1,299 <span className="text-base text-neutral-600">/ person</span></h4>
           </div>
-          <Button variant="primary" size="large">
-            Book Now
-          </Button>
+          <Link to="/booking">
+            <Button variant="primary" size="large">
+              Book Now
+            </Button>
+          </Link>
         </div>
       </div>
       
